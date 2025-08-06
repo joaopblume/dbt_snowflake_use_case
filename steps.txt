@@ -1,0 +1,61 @@
+1- create a virtual environment
+python -m venv venv
+
+2- Install dbt
+pip install dbt-snowflake
+pip install dbt-core
+
+3- make sure that you have your snowflake account setup
+references to snowflake.txt
+
+4- start dbt
+dbt init
+
+5- configure dbt_project.yml
+
+"models:
+  data_pipeline:
+    # Config indicated by + and applies to all files under models/staging/
+    staging:
+      +materialized: view
+      snowflake_warehouse: dbt_wh
+    marts:
+      +materialized: table
+      snowflake_warehouse: dbt_wh"
+
+6- create staging and marts models folders
+
+7- create packages.yml
+packages:
+  - package: 'dbt-labs/dbt_utils'
+    version: '1.1.1'
+
+8- install the packages
+cd data_pipeline
+dbt deps
+
+-- About the project: 
+
+dbt_project.yml file tells what and where our models are.
+models folder is where we re going to write our SQL logic
+staging files may be 1 to 1 to source files
+this folder is going to materilize in snowflake
+
+macros folder is used for macro function, reusable
+dbt_packages is where our third partt lib are going to live
+seeds folder is for data that doesnt change too much
+snapshots folder are useful when you create incremental models
+tests folder are obvious :p
+
+9 - We re goingo to use tpch from snowflake sample data
+create tpch_sources.yml inside "staging" folder 
+
+10 - Create staging models
+stg_tpch_orders.sql
+
+11- run models
+dbt run
+check snowflake views inside our schema
+
+12 - create stg_tpch_line_items.sql , configure it and run
+dbt run -s stg_tpch_line_items

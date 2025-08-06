@@ -1,0 +1,10 @@
+use role accountadmin; --super user
+
+-- create warehouse
+create warehouse dbt_wh with warehouse_size='x-small';
+
+-- create database
+create database dbt_db;
+
+-- create role
+create role dbt_role;
